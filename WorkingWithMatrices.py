@@ -1,3 +1,5 @@
+import scipy.sparse
+from skmultilearn.adapt import MLkNN
 import nltk, re
 from nltk import word_tokenize
 from urllib import request
@@ -8,33 +10,32 @@ import os
 import scipy.sparse
 
 
+Y_train = scipy.sparse.load_npz('D:\\ATML Project Data\\Matrices\\Y_Train.npz')
+X_train = scipy.sparse.load_npz('D:\\ATML Project Data\\Matrices\\X_Train.npz')
+
 
 
 #FILE CONTAING STOPWORD
 f = open("StopWord.txt", "r")
 StopWord = f.read().split()
 
-
-i=0
-corpus = []
-corpustext = []
-
-
-
 #TOKENIZER, FOR SPLITTING AT ','
 def tokens(x):
     return x.split(',')
 
+corpus = []
+corpustext = []
+
 #FOR WORKING WITH DIRECTORY CONTAING FILES
 #Take notice of url (and paths) that you give as vairable, these are local dependent
-for filename in os.listdir("D:\\ATML Project Data\\RandomTrain"):
+for filename in os.listdir("D:\\ATML Project Data\\RandomTest"):
     if filename.endswith(".html") or filename.endswith(".htm"):
-              url = str('file:///D:/ATML Project Data/RandomTrain/' + filename)
+              url = str('file:///D:/ATML Project Data/RandomTest/' + filename)
               html = request.urlopen(url).read().decode('utf8')
               raw = BeautifulSoup(html, 'html.parser')
 
 
-             #FOR FINDING LEBELS/descriptors FROM A FILE
+             #FOR FINDING LABELS/descriptors FROM A FILE
               descriptors = []
               for elem in raw(text=re.compile(r'EUROVOC descriptor')):
                   x = elem.parent.parent
@@ -61,9 +62,9 @@ for filename in os.listdir("D:\\ATML Project Data\\RandomTrain"):
 
 #print(corpus)
 
-# # FOR MAKING SPARSE DOC-DESCRIPTOR MATRIX. IT'S A BINARY PRESENCE ABSENCE MATRIX
-# vectorizer = CountVectorizer(tokenizer=tokens, binary=True)
-# Y = vectorizer.fit_transform(corpus)
+# FOR MAKING SPARSE DOC-DESCRIPTOR MATRIX. IT'S A BINARY PRESENCE ABSENCE MATRIX
+vectorizer1 = CountVectorizer(tokenizer=tokens, binary=True)
+Y_test = vectorizer1.fit_transform(corpus)
 # print(vectorizer.get_feature_names())
 # print(Y)
 # print(Y.shape)
@@ -71,7 +72,7 @@ for filename in os.listdir("D:\\ATML Project Data\\RandomTrain"):
 
 # #FOR MAKING SPARSE DOC-TERM MATRIX. WITH TF-TDF WEIGHTING
 vectorizer = TfidfVectorizer()
-X = vectorizer.fit_transform(corpustext)
+X_test = vectorizer.fit_transform(corpustext)
 # print(vectorizer.get_feature_names())
 # print(X)
 # print(X.shape)
@@ -84,4 +85,18 @@ X = vectorizer.fit_transform(corpustext)
 # print(X)
 # print(X.shape)
 
-scipy.sparse.save_npz('D:\\ATML Project Data\\Matrices\\X_Train.npz', X)
+
+
+# print(X_test)
+# print(X_test.shape)
+
+
+
+classifier = MLkNN(k=1)
+classifier.fit(X_train, Y_train)
+predictions = classifier.predict(X_test)
+
+print(Y_test)
+print(Y_test.shape)
+print(predictions)
+print(predictions.shape)

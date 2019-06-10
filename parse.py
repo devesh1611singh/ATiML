@@ -46,7 +46,7 @@ for elem in raw(text=re.compile(r'EUROVOC descriptor')):
     x = elem.parent.parent
     for div in x.findAll('a'):
         descriptors.append(div.text.replace('\n', ''))
-print(descriptors)
+# print(descriptors)
 
 #FOR FINDING TEXT DATA FROM HTML FILE
 b = raw.select('.texte')
