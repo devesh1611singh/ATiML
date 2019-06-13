@@ -20,6 +20,10 @@ from sklearn.ensemble import RandomForestClassifier
 f = open("StopWord.txt", "r")
 StopWord = f.read().split()
 
+#FILE CONTAING Empty files
+f1 =  open("BadFiles.txt", "r")
+BadFiles = f1.read().split()
+
 
 i=0
 corpus = []
@@ -35,9 +39,9 @@ def tokens(x):
 def TextTrain():
 #FOR WORKING WITH DIRECTORY CONTAING FILES
 #Take notice of url (and paths) that you give as vairable, these are local dependent
-    for filename in os.listdir("D:\\ATML Project Data\\RandomTrain"):
-        if filename.endswith(".html") or filename.endswith(".htm"):
-                  url = str('file:///D:/ATML Project Data/RandomTrain/' + filename)
+    for filename in os.listdir("D:\\ATML Project Data\\Raw data"):
+        if (filename.endswith(".html") or filename.endswith(".htm")) and (filename not in BadFiles):
+                  url = str('file:///D:/ATML Project Data/Raw data/' + filename)
                   html = request.urlopen(url).read().decode('utf8')
                   raw = BeautifulSoup(html, 'html.parser')
 
@@ -78,9 +82,9 @@ def TextTrain():
 def DescTrain():
 #FOR WORKING WITH DIRECTORY CONTAING FILES
 #Take notice of url (and paths) that you give as vairable, these are local dependent
-    for filename in os.listdir("D:\\ATML Project Data\\RandomTrain"):
-        if filename.endswith(".html") or filename.endswith(".htm"):
-                  url = str('file:///D:/ATML Project Data/RandomTrain/' + filename)
+    for filename in os.listdir("D:\\ATML Project Data\\Raw data"):
+        if (filename.endswith(".html") or filename.endswith(".htm")) and (filename not in BadFiles) :
+                  url = str('file:///D:/ATML Project Data/Raw data/' + filename)
                   html = request.urlopen(url).read().decode('utf8')
                   raw = BeautifulSoup(html, 'html.parser')
 
@@ -117,15 +121,15 @@ def DataSplit(X,Y):
 def Classification(X_train, X_test, y_train, y_test):
 
     # MLKNN CLASSIFICATION, WITH K=3
-    # classifier = MLkNN(k=3)
-    # classifier.fit(X_train, y_train)
-    # y_hat = classifier.predict(X_test)
+    classifier = MLkNN(k=3)
+    classifier.fit(X_train, y_train)
+    y_hat = classifier.predict(X_test)
 
     #BR
     # classifier = BinaryRelevance( classifier = SVC(), require_dense = [False, True])      #DOSENT WORK
-    classifier = BinaryRelevance(GaussianNB())                                            #WORKS
-    classifier.fit(X_train, y_train)
-    y_hat = classifier.predict(X_test)
+    # classifier = BinaryRelevance(GaussianNB())                                            #WORKS
+    # classifier.fit(X_train, y_train)
+    # y_hat = classifier.predict(X_test)
 
 
     #CC, RandomForest
@@ -160,12 +164,13 @@ def Classification(X_train, X_test, y_train, y_test):
     print(metrics.classification_report(y_test, y_hat))
     print('Hamming Loss:', round(hamm,3) )
 
-    
+
 def main():
     X = TextTrain()
     Y = DescTrain()
-    X_train, X_test, y_train, y_test = DataSplit(X,Y)
 
+    # print(X.shape)
+    X_train, X_test, y_train, y_test = DataSplit(X,Y)
     Classification(X_train, X_test, y_train, y_test)
 
 if __name__ == "__main__":
