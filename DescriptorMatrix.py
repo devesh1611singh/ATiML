@@ -2,6 +2,7 @@ import nltk, re
 from nltk import word_tokenize
 from urllib import request
 from bs4 import BeautifulSoup
+from nltk.stem.snowball import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 import os
@@ -14,7 +15,7 @@ from sklearn.svm import SVC
 from sklearn.naive_bayes import GaussianNB
 from skmultilearn.problem_transform import LabelPowerset
 from sklearn.ensemble import RandomForestClassifier
-
+import numpy as np
 
 #FILE CONTAING STOPWORD
 f = open("StopWord.txt", "r")
@@ -28,6 +29,7 @@ BadFiles = f1.read().split()
 i=0
 corpus = []
 corpustext = []
+stemmer = SnowballStemmer('english')
 
 
 
@@ -41,12 +43,13 @@ def TextTrain():
 #Take notice of url (and paths) that you give as vairable, these are local dependent
     for filename in os.listdir("D:\\ATML Project Data\\Raw data"):
         if (filename.endswith(".html") or filename.endswith(".htm")) and (filename not in BadFiles):
+                  # print(filename)
                   url = str('file:///D:/ATML Project Data/Raw data/' + filename)
                   html = request.urlopen(url).read().decode('utf8')
                   raw = BeautifulSoup(html, 'html.parser')
 
-
                   #FOR FINDING TEXT DATA FROM HTML FILE
+                  #USE TRY CATCH HERE
                   b = raw.select('.texte')
                   rawtextdata =  BeautifulSoup( str(b[0]) , 'html.parser').get_text()
                   tokens = word_tokenize(rawtextdata)
@@ -54,7 +57,9 @@ def TextTrain():
                   wordsFiltered = []
                   for w in tokens:
                       if w not in StopWord:
-                          wordsFiltered.append(w)
+                          w1 = stemmer.stem(w)
+                          wordsFiltered.append(w1)
+
 
                   cc = " ".join(wordsFiltered)
                   corpustext.append(cc)
@@ -108,7 +113,7 @@ def DescTrain():
     # print(Y)
     # print(Y.shape)
 
-    # scipy.sparse.save_npz('D:\\ATML Project Data\\Matrices\\Y_Train.npz', Y)
+    # scipy.sparse.save_npz('D:\\ATML Project Data\\Matrices\\Y.npz', Y)
     # print('Hi')
     return(Y)
 
@@ -169,7 +174,7 @@ def main():
     X = TextTrain()
     Y = DescTrain()
 
-    # print(X.shape)
+    # print(Y.shape)
     X_train, X_test, y_train, y_test = DataSplit(X,Y)
     Classification(X_train, X_test, y_train, y_test)
 
