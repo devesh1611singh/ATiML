@@ -1,0 +1,92 @@
+TFIDF, MLKNN(k=20), K-Fold Testing (K=5), Without Considering Class imbalance
+
+Micro F1-score: 0.292
+Macro F1-score: 0.039
+Micro recall: 0.188
+Macro recall: 0.04
+Micro precision: 0.687
+Macro precision: 0.041
+Hamming Loss: 0.013
+
+
+Micro F1-score: 0.28
+Macro F1-score: 0.036
+Micro recall: 0.177
+Macro recall: 0.037
+Micro precision: 0.676
+Macro precision: 0.038
+Hamming Loss: 0.013
+
+
+TFIDF, BR, K-Fold Testing (K=5), Without Considering Class imbalance
+
+Micro F1-score: 0.187
+Macro F1-score: 0.029
+Micro recall: 0.108
+Macro recall: 0.027
+Micro precision: 0.738
+Macro precision: 0.034
+Hamming Loss: 0.013
+
+
+Micro F1-score: 0.198
+Macro F1-score: 0.03
+Micro recall: 0.116
+Macro recall: 0.028
+Micro precision: 0.722
+Macro precision: 0.037
+Hamming Loss: 0.013
+
+TF, MLKNN(K=20), K-Fold Testing (K=5), Without Considering Class imbalance
+
+Micro F1-score: 0.255
+Macro F1-score: 0.036
+Micro recall: 0.162
+Macro recall: 0.038
+Micro precision: 0.599
+Macro precision: 0.038
+Hamming Loss: 0.013
+
+
+Micro F1-score: 0.187
+Macro F1-score: 0.023
+Micro recall: 0.116
+Macro recall: 0.024
+Micro precision: 0.524
+Macro precision: 0.026
+Hamming Loss: 0.014
+
+
+TF, BR, K-Fold Testing (K=5), Without Considering Class imbalance
+
+Micro F1-score: 0.151
+Macro F1-score: 0.021
+Micro recall: 0.084
+Macro recall: 0.019
+Micro precision: 0.801
+Macro precision: 0.026
+Hamming Loss: 0.013
+
+
+Micro F1-score: 0.165
+Macro F1-score: 0.023
+Micro recall: 0.092
+Macro recall: 0.021
+Micro precision: 0.873
+Macro precision: 0.028
+Hamming Loss: 0.013
+
+
+
+
+
+-----------------------------------
+ANSHU
+
+9:1 (k=10) hold out, onevsrest, tfidf, multinomial classifier
+
+macro f1 - 0.01
+
+9:1 (k=10) hold out, onevsrest, tfidf, SVC
+
+macro f1 - 0.045
