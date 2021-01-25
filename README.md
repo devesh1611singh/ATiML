@@ -1,4 +1,4 @@
-Problem Setup: Multilabel classification 
+# Multilabel classification 
 
 Dataset: Euro-LEX (http://www.ke.tu-darmstadt.de/resources/eurlex)
 
