@@ -1,4 +1,5 @@
 Problem Setup: Multilabel classification 
+
 Dataset: Euro-LEX (http://www.ke.tu-darmstadt.de/resources/eurlex)
 
 Pre procession: 
@@ -15,4 +16,5 @@ Models:
   2. Binary Relevance(BR), using Naive Bayes classifiers.
   
 Evaluation: K-Fold Cross Validation
+
 Evaluation Metric: Micro-Average Precision and Recall.
